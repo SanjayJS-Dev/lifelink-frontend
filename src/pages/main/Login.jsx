@@ -1,6 +1,7 @@
 import { Domain, LoginTwoTone, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Button, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput } from '@mui/material';
 import React, { Component } from 'react';
+import apiService from '../../services/apiCalling';
 
 class Login extends Component {
 
@@ -15,7 +16,7 @@ class Login extends Component {
         }
     }
 
-    handleLogin = (e) => {
+    handleLogin = async (e) => {
         e.preventDefault()
         const email = this.state.email
         const passwd = this.state.passwd
@@ -24,8 +25,17 @@ class Login extends Component {
         } else if (passwd == "") {
             this.setState({alert:"Enter Password"})
         } else {
-            this.setState({alert:""})
-            this.setState({loading:true})
+            this.setState({alert:"",loading:true})
+            const institution = {
+                email:email,
+                password:passwd
+            }
+            try {
+                await apiService.post("/validateLogin",institution)
+                this.setState({alert:"Login Success",loading:false})
+            } catch (error) {
+                this.setState({alert:error.response.data.message,loading:false})
+            }
         }
     }
 

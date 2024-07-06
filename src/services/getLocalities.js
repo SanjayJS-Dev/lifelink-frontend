@@ -1,8 +1,8 @@
-import axios from "axios"
+import apiService from "./apiCalling"
 
 export const getLocalities = async () => {
     try {
-        const localities = await axios.get("http://localhost:3000/localities")
+        const localities = await apiService.get("/localities")
         if(localities.status == 200) {
             return {status:true,localities:localities.data}
         } else {

@@ -12,6 +12,7 @@ import Login from './pages/main/Login.jsx';
 import About from './pages/main/About.jsx';
 import Volunteer from './pages/main/Volunteer.jsx';
 import Home from './pages/main/Home.jsx';
+import Institution from './pages/main/Institution.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element:<Volunteer/>
+      },
+      {
+        path: '/institution',
+        element: <Institution/>
       }
     ]
   }
