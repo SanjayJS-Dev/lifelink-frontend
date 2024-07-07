@@ -191,7 +191,7 @@ class Institution extends Component {
                             />
                         </FormControl>
                         <div className="w-full flex">
-                            <Button variant="contained" type="submit"> Register as Volunteer </Button>
+                            <Button variant="contained" type="submit"> Register Institution </Button>
                         </div>
                     </form>
                 </div>

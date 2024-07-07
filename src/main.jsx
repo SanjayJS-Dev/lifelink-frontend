@@ -13,6 +13,9 @@ import About from './pages/main/About.jsx';
 import Volunteer from './pages/main/Volunteer.jsx';
 import Home from './pages/main/Home.jsx';
 import Institution from './pages/main/Institution.jsx';
+import Dashboard from './pages/dashboard/Dashboard.jsx';
+import HomePage from './pages/dashboard/HomePage.jsx';
+import Verification from './pages/dashboard/Verification.jsx';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +41,20 @@ const router = createBrowserRouter([
       {
         path: '/institution',
         element: <Institution/>
+      }
+    ]
+  },
+  {
+    path:'/dashboard',
+    element: <Dashboard/>,
+    children: [
+      {
+        path:'/dashboard/',
+        element: <HomePage/>
+      },
+      {
+        path:'/dashboard/verification',
+        element: <Verification/>
       }
     ]
   }

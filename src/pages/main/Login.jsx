@@ -1,93 +1,88 @@
 import { Domain, LoginTwoTone, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Button, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput } from '@mui/material';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import apiService from '../../services/apiCalling';
+import { useNavigate } from 'react-router-dom';
 
-class Login extends Component {
+const Login = () => {
 
-    constructor() {
-        super()
-        this.state = {
-            email: "",
-            passwd: "",
-            alert: "",
-            passwdVisible: false,
-            loading: false
-        }
-    }
+    const navigate = useNavigate();
 
-    handleLogin = async (e) => {
+    const [email, setEmail] = useState("")
+    const [passwd, setPasswd] = useState("")
+    const [alert, setAlert] = useState("")
+    const [passwdVisible, setPasswdVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const handleLogin = async (e) => {
         e.preventDefault()
-        const email = this.state.email
-        const passwd = this.state.passwd
         if (email == "") {
-            this.setState({alert:"Enter Email"})
+            setAlert("Enter Email")
         } else if (passwd == "") {
-            this.setState({alert:"Enter Password"})
+            setAlert("Enter Password")
         } else {
-            this.setState({alert:"",loading:true})
+            setAlert("")
+            setLoading(true)
             const institution = {
-                email:email,
-                password:passwd
+                email: email,
+                password: passwd
             }
             try {
-                await apiService.post("/validateLogin",institution)
-                this.setState({alert:"Login Success",loading:false})
+                const response = await apiService.post("/validateLogin", institution)
+                if (response.status == 200) {
+                    localStorage.setItem('token', response.data)
+                    navigate('/dashboard')
+                } else {
+                    setAlert(response.data.message)
+                }
             } catch (error) {
-                this.setState({alert:error.response.data.message,loading:false})
+                setAlert(error.response.data.message)
+            } finally {
+                setLoading(false)
             }
         }
     }
-
-    shouldComponentUpdate(nP,nS) {
-        if(this.state.passwdVisible!=nS.passwdVisible || this.state.alert!=nS.alert || this.state.loading != nS.loading)
-            return true
-        return false
-    }
-
-    render() {
-        return (
-            <main className="container flex justify-center">
-                <div className="flex flex-col border rounded-md p-5 gap-5 w-full max-w-lg">
-                    <h1 className="prompt-semibold text-xl select-none text-green-600 text-center"> <Domain /> Institution Login </h1>
-                    {this.state.alert!="" && <Alert severity="error"> {this.state.alert} </Alert>}
-                    {this.state.loading && <LinearProgress/>}
-                    <form className="flex flex-col gap-5" autoComplete="off" onSubmit={this.handleLogin}>
-                        <FormControl variant="outlined">
-                            <InputLabel htmlFor="email">Enter Email</InputLabel>
-                            <OutlinedInput
-                                id="email"
-                                type="email"
-                                label="Enter Email"
-                                onChange={(event)=>this.setState({email:event.target.value})}
-                                autoFocus
-                            />
-                        </FormControl>
-                        <FormControl variant="outlined">
-                            <InputLabel htmlFor="password">Password</InputLabel>
-                            <OutlinedInput
-                                id="password"
-                                type={this.state.passwdVisible ? "text" : "password"}
-                                onChange={(event)=>this.setState({passwd:event.target.value})}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            onClick={() => this.setState({ passwdVisible: !this.state.passwdVisible })}
-                                            edge="end"
-                                        >
-                                            {this.state.passwdVisible ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Password"
-                            />
-                        </FormControl>
-                        <Button type="submit" color="success" variant="contained"> <LoginTwoTone sx={{marginRight:1}}/> Login </Button>
-                    </form>
-                </div>
-            </main>
-        );
-    }
+    return (
+        <main className="container flex justify-center">
+            <div className="flex flex-col border rounded-md p-5 gap-5 w-full max-w-lg">
+                <h1 className="prompt-semibold text-xl select-none text-green-600 text-center"> <Domain /> Institution Login </h1>
+                {alert != "" && <Alert severity="error"> {alert} </Alert>}
+                {loading && <LinearProgress />}
+                <form className="flex flex-col gap-5" autoComplete="off" onSubmit={handleLogin}>
+                    <FormControl variant="outlined">
+                        <InputLabel htmlFor="email">Enter Email</InputLabel>
+                        <OutlinedInput
+                            id="email"
+                            type="email"
+                            label="Enter Email"
+                            onChange={(event) => setEmail(event.target.value)}
+                            autoFocus
+                        />
+                    </FormControl>
+                    <FormControl variant="outlined">
+                        <InputLabel htmlFor="password">Password</InputLabel>
+                        <OutlinedInput
+                            id="password"
+                            type={passwdVisible ? "text" : "password"}
+                            onChange={(event) => setPasswd(event.target.value)}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={() => setPasswdVisible(!passwdVisible)}
+                                        edge="end"
+                                    >
+                                        {passwdVisible ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            label="Password"
+                        />
+                    </FormControl>
+                    <Button type="submit" color="success" variant="contained"> <LoginTwoTone sx={{ marginRight: 1 }} /> Login </Button>
+                </form>
+            </div>
+        </main>
+    )
 }
 
 export default Login;
