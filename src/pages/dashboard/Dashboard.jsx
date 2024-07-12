@@ -10,7 +10,6 @@ const Dashboard = () => {
         <>
             <Header />
             <Outlet />
-            <Footer />
         </>
     );
 }
