@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '18.x'
 
       - name: npm install, build, and test
         run: |
@@ -31,7 +31,7 @@ jobs:
         run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: release.zip
@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: node-app
 
@@ -55,15 +55,15 @@ jobs:
         run: unzip release.zip
       
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4A80FF3C44FD410E8CF5144F8B684C9C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D52916EB9EA94A5289A7048AB4D1EFFA }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7F3B2DE641C042759A29CD41B1CD6199 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_D98C017A575E4B64A4B33C5D392A0E38 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8785B04E020546B58D55B7A38A258E66 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7196B10D5D92492383C0B9D7BDC85F70 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'lifelinkapp'
           slot-name: 'Production'
