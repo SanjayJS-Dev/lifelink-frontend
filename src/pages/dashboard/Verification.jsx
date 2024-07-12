@@ -4,6 +4,7 @@ import { Backdrop, CircularProgress } from '@mui/material';
 import { VerifiedUser } from '@mui/icons-material';
 import Verify from './components/Verify';
 
+
 const Verification = () => {
 
     const [loading, setLoading] = useState(false)
@@ -50,10 +51,10 @@ const Verification = () => {
             <div className="mt-5 flex flex-wrap gap-5">
                 {
                     volunteers.length > 0 ?
-                    volunteers.map((item, index) => (
-                        <Verify key={index} name={item.name} bgrp={item.bgrp} gender={item.gender} dob={item.dob} last={item.last} address={item.address} phone={item.mobile} update={dataUpdate}/>
-                    ))
-                    : <span className="text-red-800"> No Pending Verification </span>
+                        volunteers.map((item, index) => (
+                            <Verify key={index} name={item.name} bgrp={item.bgrp} gender={item.gender} dob={item.dob} last={item.last} address={item.address} phone={item.mobile} update={dataUpdate} />
+                        ))
+                        : <span className="text-red-800"> No Pending Verification </span>
                 }
             </div>
         </main>

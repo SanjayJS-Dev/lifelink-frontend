@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { getLocalities } from '../../services/getLocalities';
 import apiService from '../../services/apiCalling';
+import formatDate from '../../utils/formatDate';
 
 class Volunteer extends Component {
 
@@ -51,7 +52,6 @@ class Volunteer extends Component {
         } else if (dob == "") {
             this.setState({ alert: "Select Date of Birth" })
         } else if (bgrp == "") {
-            console.log(bgrp)
             this.setState({ alert: "Select Blood Group" })
         } else if (locality == "") {
             this.setState({ alert: "Select Locality" })
@@ -137,7 +137,7 @@ class Volunteer extends Component {
                         </FormControl>
                         <FormControl className="w-full md:w-auto">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker onChange={(e) => this.setState({ dob: e.toDate() })} label="Enter Date of Birth" />
+                                <DatePicker onChange={(e) => this.setState({ dob: formatDate(e.toDate()) })} label="Enter Date of Birth" />
                             </LocalizationProvider>
                         </FormControl>
                         <FormControl sx={{ minWidth: 175 }} className="w-full flex-grow md:w-auto">

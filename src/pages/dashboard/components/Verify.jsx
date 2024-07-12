@@ -76,7 +76,6 @@ const Verify = (props) => {
             <span className="text-md mb-5 font-medium text-slate-600"> Blood Group: {props.bgrp} </span>
             <span className="flex w-full gap-2">
                 <Button variant="contained" onClick={accept} color="success">Accept <Verified fontSize="small" sx={{ marginLeft: 1 }} /> </Button>
-                <Button variant="contained" color="warning">Edit <EditNote fontSize="small" sx={{ marginLeft: 1 }} /> </Button>
                 <Button variant="contained" onClick={reject} color="error">Reject <Cancel fontSize="small" sx={{ marginLeft: 1 }} /> </Button>
             </span>
         </section>
